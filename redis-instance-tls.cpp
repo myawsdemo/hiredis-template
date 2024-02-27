@@ -46,6 +46,51 @@ int main() {
         std::cerr << "Error Negotiate SSL/TLS." << std::endl;
     }
 
+    // 设置用户名和密码
+    const char* username = "westhouse";
+    const char* password = "westhouse12345678";
+
+    // 验证用户名密码
+    redisReply* auth_reply = (redisReply*)redisCommand(c, "AUTH %s:%s", username, password);
+    if (auth_reply == NULL || auth_reply->type == REDIS_REPLY_ERROR) {
+        std::cerr << "Authentication failed: " << c->errstr << std::endl;
+        freeReplyObject(auth_reply);
+        redisFree(c);
+        exit(1);
+    }
+    freeReplyObject(auth_reply);
+
+    std::cout << "Authentication successful" << std::endl;
+
+    // 设置键值
+    const char* key = "westhouse-key";
+    const char* value = "westhouse-value";
+
+    redisReply* set_reply = (redisReply*)redisCommand(c, "SET %s %s", key, value);
+    if (set_reply == NULL || set_reply->type == REDIS_REPLY_ERROR) {
+        std::cerr << "SET command failed: " << c->errstr << std::endl;
+        freeReplyObject(set_reply);
+        redisFree(c);
+        exit(1);
+    }
+    freeReplyObject(set_reply);
+
+    std::cout << "SET operation successful" << std::endl;
+
+    // 获取键值
+    redisReply* get_reply = (redisReply*)redisCommand(c, "GET %s", key);
+    if (get_reply == NULL || get_reply->type == REDIS_REPLY_ERROR) {
+        std::cerr << "GET command failed: " << c->errstr << std::endl;
+        freeReplyObject(get_reply);
+        redisFree(c);
+        exit(1);
+    }
+
+    std::cout << "GET operation successful. Value: " << get_reply->str << std::endl;
+
+    freeReplyObject(get_reply);
+    redisFree(c);
+
     std::cout << "connect end" << std::endl;
 
     return 0;
