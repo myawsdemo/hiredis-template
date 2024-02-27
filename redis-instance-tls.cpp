@@ -20,6 +20,7 @@ int main() {
     */
     redisInitOpenSSL();
 
+    std::cout << "Start connecting" << std::endl;
     /* Create SSL context */
     ssl_context = redisCreateSSLContext(
         NULL, 
@@ -44,6 +45,8 @@ int main() {
         /* Handle error, in c->err / c->errstr */
         std::cerr << "Error Negotiate SSL/TLS." << std::endl;
     }
+
+    std::cout << "connect end" << std::endl;
 
     return 0;
 }
