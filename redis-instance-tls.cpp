@@ -51,7 +51,7 @@ int main() {
     const char* password = "westhouse12345678";
 
     // 验证用户名密码
-    redisReply* auth_reply = (redisReply*)redisCommand(c, "AUTH %s:%s", username, password);
+    redisReply* auth_reply = (redisReply*)redisCommand(c, "AUTH %s %s", username, password);
     if (auth_reply == NULL || auth_reply->type == REDIS_REPLY_ERROR) {
         std::cerr << "Authentication failed: " << c->errstr << std::endl;
         freeReplyObject(auth_reply);
