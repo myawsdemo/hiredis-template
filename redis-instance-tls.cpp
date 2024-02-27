@@ -6,8 +6,7 @@ int main() {
     /* An Hiredis SSL context. It holds SSL configuration and can be reused across
     * many contexts.
     */
-    redisContext* c = nullptr;
-    SSL_CTX* ssl_context = nullptr;
+    redisSSLContext *ssl_context;
 
     /* An error variable to indicate what went wrong, if the context fails to
     * initialize.
@@ -35,7 +34,7 @@ int main() {
     }
 
     /* Create Redis context and establish connection */
-    c = redisConnect("clustercfg.redis-cluster.eaxl5m.use1.cache.amazonaws.com", 6379);
+    redisContext* c = redisConnect("clustercfg.redis-cluster.eaxl5m.use1.cache.amazonaws.com", 6379);
     if (c == NULL || c->err) {
         std::cerr << "Error Redis context and establish connection." << std::endl;
     }
