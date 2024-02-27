@@ -35,7 +35,7 @@ int main() {
     }
 
     /* Create Redis context and establish connection */
-    redisContext* c = redisConnect("master.redis-instance1.eaxl5m.use1.cache.amazonaws.com", 6379);
+    redisContext* c = redisConnect("master.xxxx.cache.amazonaws.com", 6379);
     if (c == NULL || c->err) {
         std::cerr << "Error Redis context and establish connection." << std::endl;
     }
