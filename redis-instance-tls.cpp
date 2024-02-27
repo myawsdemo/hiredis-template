@@ -6,7 +6,8 @@ int main() {
     /* An Hiredis SSL context. It holds SSL configuration and can be reused across
     * many contexts.
     */
-    redisSSLContext *ssl_context;
+    redisContext* c = nullptr;
+    SSL_CTX* ssl_context = nullptr;
 
     /* An error variable to indicate what went wrong, if the context fails to
     * initialize.
