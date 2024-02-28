@@ -1,9 +1,9 @@
-#include "hiredis_cluster/hircluster.h"
-#include "hiredis/hiredis_ssl.h"
-#include <iostream>
-#include <cstdlib>
-#include <chrono>
-#include <thread>
+#include <hiredis/hiredis.h>
+#include <hiredis/hiredis_ssl.h>
+#include <hiredis_cluster/hircluster.h>
+#include <hiredis_cluster/hircluster_ssl.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define CLUSTER_NODE_TLS "clustercfg.redis-cluster.eaxl5m.use1.cache.amazonaws.com:6379"
 #define CLUSTER_USERNAME "westhouse"
@@ -37,17 +37,23 @@ int main() {
         exit(-1);
     }
 
-    int count = 0;
-    while (count < 10) {
-        redisReply *reply = (redisReply *)redisClusterCommand(cc, "SET %s %d", "test1", count);
-        std::cout << "SET: " << count << std::endl;
-        if (cc && cc->err) {
-            std::cout << "Error: " << cc->errstr << std::endl;
-        }
-        count++;
-        freeReplyObject(reply);
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+    const char* key = "westhouse-key";
+    const char* value = "westhouse-value";
+
+    redisReply *set_reply = (redisReply *)redisClusterCommand(cc, "SET %s %s", key, value);
+    if (cc && cc->err) {
+         std::cerr << "SET command failed: " << cc->errstr << std::endl;
     }
+    freeReplyObject(set_reply);
+    std::cout << "SET operation successful" << std::endl;
+
+    redisReply *get_reply = (redisReply *)redisClusterCommand(cc, "GET %s", key);
+
+    if (get_reply == NULL || get_reply->type == REDIS_REPLY_ERROR) {
+        std::cerr << "GET command failed: " << c->errstr << std::endl;
+    }
+    std::cout << "GET operation successful. Value: " << get_reply->str << std::endl;
+    freeReplyObject(get_reply);
 
     redisClusterFree(cc);
     redisFreeSSLContext(ssl);

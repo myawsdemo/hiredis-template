@@ -25,7 +25,7 @@ int main() {
     ssl_context = redisCreateSSLContext(
         NULL, 
         "/etc/ssl/certs", 
-        NULL, 
+        NULL,
         NULL,
         NULL, &ssl_error);
 
