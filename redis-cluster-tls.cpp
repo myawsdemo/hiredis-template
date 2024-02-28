@@ -17,7 +17,7 @@ int main() {
     ssl = redisCreateSSLContext(nullptr, "/etc/ssl/certs", nullptr, nullptr,
                                 nullptr, &ssl_error);
     if (!ssl) {
-        std::cout << "SSL Context error: " << redisSSLContextGetError(ssl_error) << std::endl;
+        std::cerr << "SSL Context error: " << redisSSLContextGetError(ssl_error) << std::endl;
         exit(1);
     }
 
@@ -28,7 +28,7 @@ int main() {
     redisClusterSetOptionConnectTimeout(cc, timeout);
     redisClusterSetOptionRouteUseSlots(cc);
     redisClusterSetOptionEnableSSL(cc, ssl);
-    redisClusterSetOptionUsername(cc,);
+    redisClusterSetOptionUsername(cc, CLUSTER_USERNAME);
     redisClusterSetOptionPassword(cc, CLUSTER_PASSWORD);
     redisClusterConnect2(cc);
     if (cc && cc->err) {
@@ -38,7 +38,7 @@ int main() {
     }
 
     int count = 0;
-    while (count < 10000) {
+    while (count < 10) {
         redisReply *reply = (redisReply *)redisClusterCommand(cc, "SET %s %d", "test1", count);
         std::cout << "SET: " << count << std::endl;
         if (cc && cc->err) {

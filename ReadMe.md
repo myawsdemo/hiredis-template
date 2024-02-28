@@ -1,8 +1,9 @@
 ### 安装依赖
 ```
 sudo yum install -y git g++ openssl-devel
+sudo dnf install -y libevent-devel
 ```
-### 下载代码和依赖
+### 下载Hiredis代码和依赖
 ```
 git clone https://github.com/redis/hiredis.git
 cd hiredis
@@ -16,4 +17,13 @@ cp hiredis_ssl.a hiredis.a /usr/lib64
 ### 下载demo代码
 ```
 g++ -o redis-i redis-instance-tls.cpp -Wl,-Bstatic -lhiredis_ssl -lhiredis -Wl,-Bdynamic -lssl -lcrypto -ldl -lpthread
+```
+
+### 下载Hiredis Cluster代码
+```
+git clone https://github.com/Nordix/hiredis-cluster.git
+mkdir build
+cd build
+sudo cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_SSL=ON ..
+make install
 ```
