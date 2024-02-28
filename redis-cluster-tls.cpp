@@ -52,7 +52,7 @@ int main() {
     redisReply *get_reply = (redisReply *)redisClusterCommand(cc, "GET %s", key);
 
     if (get_reply == NULL || get_reply->type == REDIS_REPLY_ERROR) {
-        std::cerr << "GET command failed: " << c->errstr << std::endl;
+        std::cerr << "GET command failed: " << cc->errstr << std::endl;
     }
     std::cout << "GET operation successful. Value: " << get_reply->str << std::endl;
     freeReplyObject(get_reply);
