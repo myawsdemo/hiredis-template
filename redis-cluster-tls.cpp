@@ -1,9 +1,11 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+
 #include <hiredis/hiredis.h>
 #include <hiredis/hiredis_ssl.h>
 #include <hiredis_cluster/hircluster.h>
 #include <hiredis_cluster/hircluster_ssl.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 #define CLUSTER_NODE_TLS "clustercfg.redis-cluster.eaxl5m.use1.cache.amazonaws.com:6379"
 #define CLUSTER_USERNAME "westhouse"
